@@ -1,4 +1,4 @@
-async function sayHello() {
+async function getUrl() {
     let [tab] = await chrome.tabs.query({ active: true })
     chrome.scripting.executeScript({
         target: { tabId: tab.id},
@@ -9,4 +9,4 @@ async function sayHello() {
     });
 }
 
-document.getElementById("myButton").addEventListener("click", sayHello);
+document.getElementById("start-button").addEventListener("click", getUrl);
