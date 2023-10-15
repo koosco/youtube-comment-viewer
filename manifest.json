@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "name": "My Extension",
+    "icons": {
+        "32": "icon/32.png"
+    },
+    "version": "1.0",
+    "background": {
+        "service_worker": "service-worker.js",
+        "type": "module"
+    },
+    "action": {
+        "default_popup": "popup/index.html",
+        "default_icon": "icon/32.png",
+        "default_title": "Youtube comment viwer"
+    },
+    "permissions": [
+        "scripting"
+    ],
+    "host_permissions": [
+        "http://*/*",
+        "https://*/*"
+    ]
+}
