@@ -1,12 +1,8 @@
-async function getUrl() {
-    let [tab] = await chrome.tabs.query({ active: true })
-    chrome.scripting.executeScript({
-        target: { tabId: tab.id},
-        func: () => {
-            document.body.style.backgroundColor = "red";
-            alert(document.URL);
-        }
-    });
-}
-
-document.getElementById("start-button").addEventListener("click", getUrl);
+chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            if (tabs && tabs[0] && tabs[0].url) {
+                const currentTabUrl = tabs[0].url;
+                
+                var inputElement = document.getElementById("urlInput");
+                inputElement.value = currentTabUrl;
+            }  
+});

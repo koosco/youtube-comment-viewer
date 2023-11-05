@@ -18,7 +18,9 @@
         "default_title": "Youtube comment viwer"
     },
     "permissions": [
-        "scripting"
+        "scripting",
+        "tabs",
+        "activeTab"
     ],
     "host_permissions": [
         "http://*/*",
