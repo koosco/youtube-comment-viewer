@@ -12,8 +12,15 @@
         "service_worker": "service-worker.js",
         "type": "module"
     },
+    "content_scripts": [
+        {
+            "matches": "https://www.youtube.com/watch*",
+            "js": "contentScript/script.js",
+            "run_at": "document_start"
+        }
+    ],
     "action": {
-        "default_popup": "popup/index.html",
+        "default_popup": "popup/popup.html",
         "default_icon": "icon/32.png",
         "default_title": "Youtube comment viwer"
     },
