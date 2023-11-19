@@ -1,3 +1,8 @@
+chrome.runtime.sendMessage({url: document.URL}, (response) => {
+    console.log("[contentscript] chrome.runtime.sendMessage()");
+    console.log(response.url);
+});
+
 // DOM에 새로운 요소 추가
 setTimeout(() => {
     var newDiv = document.createElement("h1");

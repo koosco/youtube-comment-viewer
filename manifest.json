@@ -9,7 +9,7 @@
     },
     "version": "1.0",
     "background": {
-        "service_worker": "service-worker.js",
+        "service_worker": "background.js",
         "type": "module"
     },
     "content_scripts": [
