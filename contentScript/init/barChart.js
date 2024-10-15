@@ -4,12 +4,14 @@ var token = null;
 
 function initBarChart(parent) {
     const barChartDiv = createTag("div", "barChartDiv");
+    barChartDiv.style.paddingBottom = "20px";
     appendChildDivTo(parent, barChartDiv);
 
     const d3Container = createTag("div", "commentBarGraph");
     appendChildDivTo(barChartDiv, d3Container);
 
     const button = createTag("button", "barchart-button", "단어 빈도 계산하기");
+    barChartDiv.style.paddingBottom = "10px";
     addBarChartEvent(button);
     appendChildDivTo(barChartDiv, button);
 }

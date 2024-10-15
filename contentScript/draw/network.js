@@ -1,6 +1,6 @@
 function drawNetworkGraph(nodes, links, containerId) {
-    var width = 800;  // width 값 정의
-    var height = 800;  // height 값 정의
+    var width = 600;  // width 값 정의
+    var height = 600;  // height 값 정의
 
     var svg = d3.select(`#${containerId}`).append("svg")
         .attr("width", width)

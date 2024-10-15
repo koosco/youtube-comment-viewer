@@ -7,7 +7,7 @@ function init(){
 
 function initHead() {
     const newDiv = createTag("div", "newContentDiv");
-    const newHead = createTag("h1", "newContentDiv-h1", "댓글분포");
+    const newHead = createTag("h1", "newContentDiv-h1", "Youtube 댓글 분석하기!");
     appendChildDivTo(newDiv, newHead);
     
     return newDiv;

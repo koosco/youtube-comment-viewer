@@ -4,6 +4,7 @@ var networkToken = null;
 
 function initNetworkChart(parent) {
     const networkChartDiv = createTag("div", "networkChartDiv");
+    networkChartDiv.style.paddingBottom = "20px";
     appendChildDivTo(parent, networkChartDiv);
 
     const networkContainer = createTag("div", "commentNetworkGraph");
