@@ -1,4 +1,3 @@
 setTimeout(() => {
-    const newDiv = init();
-    createBarChartButton(newDiv);
+    init();
 }, 2000);

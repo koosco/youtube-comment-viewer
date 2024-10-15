@@ -22,6 +22,7 @@
                 "contentScript/ui.js",
                 "contentScript/init/init.js",
                 "contentScript/init/barChart.js",
+                "contentScript/init/networkChart.js",
                 "contentScript/util/util.js",
                 "package/d3.v5.min.js"],
             "run_at": "document_start"

@@ -4,11 +4,6 @@ function drawBarChart(dataset, containerId) {
     const height = 400;
     const padding = 40;
 
-    // d3Container 생성 및 추가
-    const d3Container = createTag("div", containerId);
-    var newDiv = document.getElementById("newContentDiv");
-    addChildDivTo(newDiv, d3Container);
-
     // SVG 영역 설정
     var svg = d3.select(`#${containerId}`).append("svg")
         .attr("width", width)
@@ -79,18 +74,12 @@ function drawBarChart(dataset, containerId) {
         .attr("text-anchor", "middle")
         .text(d => d.value);
 
-    // 그래프를 첫 번째 자식 요소로 삽입
-    if(newDiv.firstChild) {
-        newDiv.insertBefore(d3Container, newDiv.firstChild);
-    } else {
-        newDiv.appendChild(d3Container);
-    }
 
     return { svg, xScale, yScale, width, height, padding };
 }
 
 
-function updateBarChart(graphElements, newDataset) {
+function reDrawBarChart(graphElements, newDataset) {
     const { svg, xScale, yScale, width, height, padding } = graphElements;
 
     // 새로운 그라데이션 정의 추가 (노란색 계열)

@@ -1,13 +1,23 @@
-var graphElements = null;
-var entireDataLatest = {};
-var token = null;
+var barGraphElements = null;
+var barEntireDataLatest = {};
+var barToken = null;
 
-function createBarChartButton(parent) {
-    const chartButton = createTag("button", "barchart-button", "단어 빈도 계산하기");
-    chartButton.addEventListener('click', () => {
-        chrome.runtime.sendMessage({action: "fetchData", token: token}, (response) => getComments(response));
+function initBarChart(parent) {
+    const barChartDiv = createTag("div", "barChartDiv");
+    appendChildDivTo(parent, barChartDiv);
+
+    const d3Container = createTag("div", "commentBarGraph");
+    appendChildDivTo(barChartDiv, d3Container);
+
+    const button = createTag("button", "barchart-button", "단어 빈도 계산하기");
+    addBarChartEvent(button);
+    appendChildDivTo(barChartDiv, button);
+}
+
+function addBarChartEvent(button) {
+    button.addEventListener('click', () => {
+        chrome.runtime.sendMessage({action: "getFrequency", token: barToken}, (response) => getComments(response));
     });
-    addChildDivTo(parent, chartButton);
 }
 
 function getComments(response) {
@@ -16,20 +26,23 @@ function getComments(response) {
         return;
     }
     
-    token = response.data.nextPageToken;
+    console.log("데이터 가져오기 성공");
+    barToken = response.data.nextPageToken;
     comments = response.data.comments;
 
-    if (graphElements === null) {
-        createNewBarChart(comments);
+    if (barGraphElements === null) {
+        createBarChart(comments);
     } 
-    updateBarChart(comments, graphElements, entireDataLatest);
+    updateBarChart(comments, barGraphElements, barEntireDataLatest);
 }
 
-function createNewBarChart(comments) {
-    entireDataLatest = comments;
-    const top10Entries = Object.entries(entireDataLatest).slice(0, 10);
+function createBarChart(comments) {
+    console.log("createBarChart 호출");
+    barEntireDataLatest = comments;
+    const top10Entries = Object.entries(barEntireDataLatest).slice(0, 10);
     const dataset = top10Entries.map(([name, value]) => ({ name, value }));
-    graphElements = drawBarChart(dataset, "commentGraph");
+    barGraphElements = drawBarChart(dataset, "commentBarGraph");
+    console.log(`barGraphElements: ${barGraphElements}`);
 }
 
 function updateBarChart(comments, graphElements, entireDataLatest) {
@@ -39,5 +52,5 @@ function updateBarChart(comments, graphElements, entireDataLatest) {
     }
     const top10Entries = Object.entries(entireDataLatest).sort((a, b) => b[1] - a[1]).slice(0, 10);
     const dataset = top10Entries.map(([name, value]) => ({ name, value }));
-    updateBarChart(graphElements, dataset);
+    reDrawBarChart(graphElements, dataset);
 }

@@ -8,12 +8,12 @@ function createTag(tag, id, text) {
     return div;
 }
 
-function addChildDivTo(parent, child) {
+function appendChildDivTo(parent, child) {
     parent.appendChild(child);
 }
 
 function clearComments() {
-    graphElements = null;
-    entireDataLatest = null;
-    token = null;
+    barGraphElements = null;
+    barEntireDataLatest = null;
+    barToken = null;
 }

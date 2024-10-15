@@ -4,7 +4,7 @@ let nextPageToken = '';
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.active === true) {
         isActive = true;
-        fetchDataAndSend();
+        getFrequency();
     } else if (request.active === false) {
         isActive = false;
         clearInterval(pollingInterval);
@@ -27,9 +27,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.action === "fetchData") {
-        console.log("fetchData 감지");
-        fetchDataAndSend(request.token)
+    if (request.action === "getCorrelations") {
+        console.log("getCorrelations 감지");
+        getFrequency(request.token)
             .then((result) => {
                 console.log(result);
                 sendResponse({success: true, data: result})
@@ -39,7 +39,20 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 });
 
-async function fetchDataAndSend(token) {
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.action === "getFrequency") {
+        console.log("getFrequency 감지");
+        getFrequency(request.token)
+            .then((result) => {
+                console.log(result);
+                sendResponse({success: true, data: result})
+            })
+            .catch((error) => sendResponse({success: false, error: error.message}));
+        return true;
+    }
+});
+
+async function getFrequency(token) {
     try {
         const url = await getCurrentTabUrl();
         let apiUrl = `http://127.0.0.1:8000/api/youtube/frequency?url=${url}`;
@@ -67,13 +80,13 @@ async function fetchDataAndSend(token) {
 let pollingInterval;
 
 function startPolling() {
-    pollingInterval = setInterval(fetchDataAndSend, 5000);
+    pollingInterval = setInterval(getFrequency, 5000);
 }
 
 // 더 보기 버튼 클릭 시 댓글 데이터 요청
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if(request && request.moreContent && isActive === true) {
-        fetchDataAndSend();
+        getFrequency();
     }
 });
 

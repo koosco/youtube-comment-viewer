@@ -3,10 +3,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const dataset = request.result.data;
         
         const existingGraph = document.querySelector("#newContentDiv-result svg");
-        if (existingGraph && graphElements) {
-            updateBarChart(graphElements, dataset);
+        if (existingGraph && barGraphElements) {
+            updateBarChart(barGraphElements, dataset);
         } else {
-            graphElements = drawBarChart(dataset, "newContentDiv-result");
+            barGraphElements = drawBarChart(dataset, "newContentDiv-result");
         }
     }
 });
