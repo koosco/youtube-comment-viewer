@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <meta charset="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Word Network Visualization</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
@@ -18,27 +18,25 @@
 
         text {
             font-family: sans-serif;
-            font-size: 14px; /* 텍스트 크기 증가 */
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <h1>Word Network Visualization</h1>
-    <svg width="1200" height="800"></svg> <!-- SVG 사이즈 확대 -->
+    <svg width="1200" height="800"></svg>
 
     <script>
-        // 데이터 로딩 및 시각화 함수
         function loadDataAndVisualize() {
             fetch('http://localhost:8000/api/youtube/correlations?url=https://www.youtube.com/watch?v=lrQLLyYg-ww')
                 .then(response => response.json())
                 .then(data => {
-                    console.log("Received data:", data);  // 데이터 로그 출력
+                    console.log("Received data:", data);
                     updateVisualization(data);
                 })
                 .catch(error => console.error('Error:', error));
         }
 
-        // 시각화 함수
         function updateVisualization(data) {
             const svg = d3.select("svg");
             const width = +svg.attr("width");
@@ -46,18 +44,17 @@
 
             svg.selectAll("*").remove();
 
-            // 줌 및 드래그 설정
             const zoom = d3.zoom()
-                .scaleExtent([0.5, 5])  // 최소 0.5배, 최대 5배 줌 설정
+                .scaleExtent([0.5, 5])
                 .on("zoom", zoomed);
 
-            const container = svg.append("g");  // 모든 요소를 그룹화하여 줌/드래그 처리
+            const container = svg.append("g");
 
             svg.call(zoom);
 
             const simulation = d3.forceSimulation(data.nodes)
-                .force("link", d3.forceLink(data.links).id(d => d.id).distance(150))  // 링크 간 거리 증가
-                .force("charge", d3.forceManyBody().strength(-500))  // 노드 간 반발력 증가
+                .force("link", d3.forceLink(data.links).id(d => d.id).distance(100))
+                .force("charge", d3.forceManyBody().strength(-200))
                 .force("center", d3.forceCenter(width / 2, height / 2));
 
             const link = container.append("g")
@@ -65,7 +62,7 @@
                 .selectAll("line")
                 .data(data.links)
                 .enter().append("line")
-                .attr("stroke-width", d => Math.sqrt(d.value) + 1);  // 링크 두께 증가
+                .attr("stroke-width", d => Math.sqrt(d.value) + 1);
 
             const node = container.append("g")
                 .attr("class", "nodes")
@@ -73,12 +70,13 @@
                 .data(data.nodes)
                 .enter().append("g");
 
-            node.append("circle")
-                .attr("r", 10)  // 노드 크기 증가
-                .attr("fill", "lightblue");
+            const circle = node.append("circle")
+                .attr("r", 10)
+                .attr("fill", "lightblue")
+                .on("click", highlightNode);  // 클릭 이벤트 추가
 
             node.append("text")
-                .attr("dx", 15)  // 텍스트 위치 조정
+                .attr("dx", 15)
                 .attr("dy", ".35em")
                 .text(d => d.id);
 
@@ -103,13 +101,40 @@
                     .attr("transform", d => `translate(${d.x},${d.y})`);
             }
 
+            // 노드 강조 기능
+            function highlightNode(event, d) {
+                // 연결된 링크 및 노드를 필터링
+                const connectedNodes = new Set();
+                data.links.forEach(l => {
+                    if (l.source.id === d.id) {
+                        connectedNodes.add(l.target.id);
+                    } else if (l.target.id === d.id) {
+                        connectedNodes.add(l.source.id);
+                    }
+                });
+
+                // 모든 노드 및 링크를 흐리게 처리
+                node.selectAll("circle").attr("fill", "lightgray");
+                link.attr("stroke-opacity", 0.1);
+
+                // 선택된 노드 및 연결된 노드 강조
+                d3.select(this).attr("fill", "darkblue");  // 클릭된 노드 강조
+                node.selectAll("circle")
+                    .filter(n => connectedNodes.has(n.id))  // 연결된 노드 필터링
+                    .attr("fill", "darkblue");  // 연결된 노드를 짙은 파란색으로
+
+                // 연결된 링크 강조
+                link
+                    .filter(l => l.source.id === d.id || l.target.id === d.id)
+                    .attr("stroke-opacity", 1);  // 연결된 링크 강조
+            }
+
             // 줌 이벤트 함수
             function zoomed(event) {
-                container.attr("transform", event.transform);  // 줌/드래그에 따라 컨테이너 이동
+                container.attr("transform", event.transform);
             }
         }
 
-        // 페이지 로드 시 데이터 로딩 및 시각화 실행
         loadDataAndVisualize();
     </script>
 </body>
