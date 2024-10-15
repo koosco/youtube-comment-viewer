@@ -15,5 +15,5 @@ function appendChildDivTo(parent, child) {
 function clearComments() {
     barGraphElements = null;
     barEntireDataLatest = null;
-    barToken = null;
+    token = null;
 }

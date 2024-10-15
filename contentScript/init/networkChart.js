@@ -5,15 +5,13 @@ var networkToken = null;
 function initNetworkChart(parent) {
     const networkChartDiv = createTag("div", "networkChartDiv");
     appendChildDivTo(parent, networkChartDiv);
-    const networkChartGraphDiv = createTag("div", "networkChartGraphDiv");
-    appendChildDivTo(networkChartDiv, networkChartGraphDiv);
+
+    const networkContainer = createTag("div", "commentNetworkGraph");
+    appendChildDivTo(networkChartDiv, networkContainer);
 
     const button = createTag("button", "network-button", "단어 상관관계 계산하기");
     addNetworkChartEvent(button);
     appendChildDivTo(networkChartDiv, button);
-
-    const networkContainer = createTag("div", "commentNetworkGraph");
-    appendChildDivTo(networkChartDiv, networkContainer);
 }
 
 function addNetworkChartEvent(button) {
@@ -28,16 +26,17 @@ function getCorrelations(response) {
         return;
     }
     
-    barToken = response.data.nextPageToken;
+    console.log("데이터 가져오기 성공");
+    token = response.data.nextPageToken;
     nodes = response.data.nodes;
     links = response.data.links;
 
     if (networkElements === null) {
         createNewNetworkChart(nodes, links);
-    } 
-    updateNetworkChart(networkElements, barGraphElements, barEntireDataLatest);
+    }
+    // updateNetworkChart(networkElements, barGraphElements, barEntireDataLatest);
 }
 
 function createNewNetworkChart(nodes, links) {
-    barGraphElements = drawNetworkGraph(nodes, links, "commentGraph");
+    barGraphElements = drawNetworkGraph(nodes, links, "commentNetworkGraph");
 }

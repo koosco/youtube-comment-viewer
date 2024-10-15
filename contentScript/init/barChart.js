@@ -1,6 +1,6 @@
 var barGraphElements = null;
 var barEntireDataLatest = {};
-var barToken = null;
+var token = null;
 
 function initBarChart(parent) {
     const barChartDiv = createTag("div", "barChartDiv");
@@ -16,7 +16,7 @@ function initBarChart(parent) {
 
 function addBarChartEvent(button) {
     button.addEventListener('click', () => {
-        chrome.runtime.sendMessage({action: "getFrequency", token: barToken}, (response) => getComments(response));
+        chrome.runtime.sendMessage({action: "getFrequency", token: token}, (response) => getComments(response));
     });
 }
 
@@ -27,7 +27,7 @@ function getComments(response) {
     }
     
     console.log("데이터 가져오기 성공");
-    barToken = response.data.nextPageToken;
+    token = response.data.nextPageToken;
     comments = response.data.comments;
 
     if (barGraphElements === null) {

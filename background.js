@@ -29,7 +29,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.action === "getCorrelations") {
         console.log("getCorrelations 감지");
-        getFrequency(request.token)
+        getCorrelations(request.token)
             .then((result) => {
                 console.log(result);
                 sendResponse({success: true, data: result})
@@ -51,6 +51,28 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         return true;
     }
 });
+
+async function getCorrelations(token) {
+    try {
+        const url = await getCurrentTabUrl();
+        let apiUrl = `http://127.0.0.1:8000/api/youtube/correlations?url=${url}`;
+        
+        if (token) {
+            apiUrl += `&page_token=${encodeURIComponent(token)}`;
+        }
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        
+        return data;
+        
+    } catch (error) {
+        console.error('데이터 가져오기 실패:', error);
+        throw error;
+    }
+}
 
 async function getFrequency(token) {
     try {
@@ -77,19 +99,6 @@ async function getFrequency(token) {
     }
 }
 
-let pollingInterval;
-
-function startPolling() {
-    pollingInterval = setInterval(getFrequency, 5000);
-}
-
-// 더 보기 버튼 클릭 시 댓글 데이터 요청
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if(request && request.moreContent && isActive === true) {
-        getFrequency();
-    }
-});
-
 function getCurrentTabUrl() {
     return new Promise((resolve) => {
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -97,6 +106,19 @@ function getCurrentTabUrl() {
         });
     });
 }
+
+// let pollingInterval;
+
+// function startPolling() {
+//     pollingInterval = setInterval(getFrequency, 5000);
+// }
+
+// // 더 보기 버튼 클릭 시 댓글 데이터 요청
+// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+//     if(request && request.moreContent && isActive === true) {
+//         getFrequency();
+//     }
+// });
 
 // // 초기 데이터 가져오기 및 폴링 시작
 // if (isActive) {
