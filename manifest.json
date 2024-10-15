@@ -16,13 +16,13 @@
         {
             "matches": ["https://www.youtube.com/watch*"],
             "js": ["contentScript/checkUrlChange.js",
-                "contentScript/drawGraph.js",
-                "contentScript/drawNetwork.js",
-                "contentScript/newElement.js",
+                "contentScript/draw/barChart.js",
+                "contentScript/draw/network.js",
                 "contentScript/resultListener.js",
                 "contentScript/ui.js",
-                "package/d3.v5.min.js",
-                "package/axios.min.js"],
+                "contentScript/init/init.js",
+                "contentScript/init/barChart.js",
+                "package/d3.v5.min.js"],
             "run_at": "document_start"
         }
     ],
