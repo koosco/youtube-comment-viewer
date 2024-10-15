@@ -1,6 +1,5 @@
 // URL 변경 감지 함수
 function detectURLChange() {
-    console.log("detectURLChange 호출");
     let lastUrl = location.href;
     new MutationObserver(() => {
       const url = location.href;

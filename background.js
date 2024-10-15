@@ -19,13 +19,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         console.log("urlChanged 감지");
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
             if (tabs[0]) {
-                chrome.tabs.sendMessage(tabs[0].id, {action: 'clearGraph'}, function(response) {
-                    if (chrome.runtime.lastError) {
-                        console.error('메시지 전송 오류:', chrome.runtime.lastError);
-                    } else {
-                        console.log('clearGraph 메시지가 성공적으로 전송되었습니다.');
-                    }
-                });
+                chrome.tabs.sendMessage(tabs[0].id, {action: 'clearGraph'});
+                console.log("clearGraph 메시지 전송");
             }
         });
     }
