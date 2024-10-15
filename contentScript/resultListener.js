@@ -19,7 +19,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 });
 
-// 메시지 리스너 추가
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.action === 'clearGraph') {
         clearGraph('newContentDiv'); 
