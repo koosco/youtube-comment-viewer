@@ -60,10 +60,11 @@ function getComments(response, token, graphElements, entireDataLatest) {
     if (!response || !response.success) {
         console.error("데이터 가져오기 실패");
     }
+    
     token = response.data.nextPageToken;
     comments = response.data.comments;
 
-    if (graphElements !== null) {
+    if (graphElements === null) {
         createNewBarChart(comments, graphElements);
         return;
     } 
