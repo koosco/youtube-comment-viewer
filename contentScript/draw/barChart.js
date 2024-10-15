@@ -1,4 +1,4 @@
-function drawGraph(dataset, containerId) {
+function drawBarChart(dataset, containerId) {
     console.log("drawGraph 호출");
     const width = 600;
     const height = 400;
@@ -90,7 +90,7 @@ function drawGraph(dataset, containerId) {
 }
 
 
-function updateGraph(graphElements, newDataset) {
+function updateBarChart(graphElements, newDataset) {
     const { svg, xScale, yScale, width, height, padding } = graphElements;
 
     // 새로운 그라데이션 정의 추가 (노란색 계열)

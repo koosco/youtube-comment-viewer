@@ -4,9 +4,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         
         const existingGraph = document.querySelector("#newContentDiv-result svg");
         if (existingGraph && graphElements) {
-            updateGraph(graphElements, dataset);
+            updateBarChart(graphElements, dataset);
         } else {
-            graphElements = drawGraph(dataset, "newContentDiv-result");
+            graphElements = drawBarChart(dataset, "newContentDiv-result");
         }
     }
 });

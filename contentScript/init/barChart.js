@@ -29,7 +29,7 @@ function createNewBarChart(comments) {
     entireDataLatest = comments;
     const top10Entries = Object.entries(entireDataLatest).slice(0, 10);
     const dataset = top10Entries.map(([name, value]) => ({ name, value }));
-    graphElements = drawGraph(dataset, "commentGraph");
+    graphElements = drawBarChart(dataset, "commentGraph");
 }
 
 function updateBarChart(comments, graphElements, entireDataLatest) {
@@ -39,5 +39,5 @@ function updateBarChart(comments, graphElements, entireDataLatest) {
     }
     const top10Entries = Object.entries(entireDataLatest).sort((a, b) => b[1] - a[1]).slice(0, 10);
     const dataset = top10Entries.map(([name, value]) => ({ name, value }));
-    updateGraph(graphElements, dataset);
+    updateBarChart(graphElements, dataset);
 }
