@@ -1,18 +1,3 @@
-function getComments(response, token, graphElements, entireDataLatest) {
-    if (!response || !response.success) {
-        console.error("데이터 가져오기 실패");
-    }
-    
-    token = response.data.nextPageToken;
-    comments = response.data.comments;
-
-    if (graphElements === null) {
-        createNewBarChart(comments, graphElements);
-        return;
-    } 
-    updateBarChart(comments, entireDataLatest);
-}
-
 function drawGraph(dataset, containerId) {
     console.log("drawGraph 호출");
     const width = 600;

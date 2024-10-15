@@ -1,5 +1,3 @@
-let graphElements;
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if(request.result){
         const dataset = request.result.data;

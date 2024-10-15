@@ -1,7 +1,4 @@
 setTimeout(() => {
-    let graphElements = null;
-    let entireDataLatest;
-    let token = null;
     const newDiv = init();
-    createBarChartButton(newDiv, token, graphElements, entireDataLatest);
+    createBarChartButton(newDiv);
 }, 2000);
