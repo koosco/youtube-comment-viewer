@@ -38,5 +38,6 @@ function getCorrelations(response) {
 }
 
 function createNewNetworkChart(nodes, links) {
-    barGraphElements = drawNetworkGraph(nodes, links, "commentNetworkGraph");
+    console.log(`createNewNetworkChart: links: ${links}`);
+    networkGraphElements = drawNetworkGraph(nodes, links, "commentNetworkGraph");
 }

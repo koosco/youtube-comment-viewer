@@ -30,6 +30,7 @@ function getComments(response) {
     token = response.data.nextPageToken;
     comments = response.data.comments;
 
+    console.log(`barGraphElements: ${barGraphElements}`);
     if (barGraphElements === null) {
         createBarChart(comments);
     } 
