@@ -46,19 +46,28 @@
 
             svg.selectAll("*").remove();
 
+            // 줌 및 드래그 설정
+            const zoom = d3.zoom()
+                .scaleExtent([0.5, 5])  // 최소 0.5배, 최대 5배 줌 설정
+                .on("zoom", zoomed);
+
+            const container = svg.append("g");  // 모든 요소를 그룹화하여 줌/드래그 처리
+
+            svg.call(zoom);
+
             const simulation = d3.forceSimulation(data.nodes)
                 .force("link", d3.forceLink(data.links).id(d => d.id).distance(150))  // 링크 간 거리 증가
                 .force("charge", d3.forceManyBody().strength(-500))  // 노드 간 반발력 증가
                 .force("center", d3.forceCenter(width / 2, height / 2));
 
-            const link = svg.append("g")
+            const link = container.append("g")
                 .attr("class", "links")
                 .selectAll("line")
                 .data(data.links)
                 .enter().append("line")
                 .attr("stroke-width", d => Math.sqrt(d.value) + 1);  // 링크 두께 증가
 
-            const node = svg.append("g")
+            const node = container.append("g")
                 .attr("class", "nodes")
                 .selectAll("g")
                 .data(data.nodes)
@@ -92,6 +101,11 @@
 
                 node
                     .attr("transform", d => `translate(${d.x},${d.y})`);
+            }
+
+            // 줌 이벤트 함수
+            function zoomed(event) {
+                container.attr("transform", event.transform);  // 줌/드래그에 따라 컨테이너 이동
             }
         }
 
