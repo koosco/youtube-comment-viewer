@@ -1,3 +1,18 @@
+function getComments(response, token, graphElements, entireDataLatest) {
+    if (!response || !response.success) {
+        console.error("데이터 가져오기 실패");
+    }
+    
+    token = response.data.nextPageToken;
+    comments = response.data.comments;
+
+    if (graphElements === null) {
+        createNewBarChart(comments, graphElements);
+        return;
+    } 
+    updateBarChart(comments, entireDataLatest);
+}
+
 function drawGraph(dataset, containerId) {
     console.log("drawGraph 호출");
     const width = 600;
@@ -5,11 +20,9 @@ function drawGraph(dataset, containerId) {
     const padding = 40;
 
     // d3Container 생성 및 추가
-    var d3Container = document.createElement("div");
-    d3Container.setAttribute("id", containerId);
-    
+    const d3Container = createTag("div", containerId);
     var newDiv = document.getElementById("newContentDiv");
-    newDiv.appendChild(d3Container);
+    addChildDivTo(newDiv, d3Container);
 
     // SVG 영역 설정
     var svg = d3.select(`#${containerId}`).append("svg")
