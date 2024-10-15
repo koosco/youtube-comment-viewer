@@ -14,6 +14,7 @@
         .nodes circle {
             stroke: #fff;
             stroke-width: 1.5px;
+            cursor: pointer; /* 마우스가 노드 위에 있을 때 커서 변경 */
         }
 
         text {
@@ -73,7 +74,8 @@
             const circle = node.append("circle")
                 .attr("r", 10)
                 .attr("fill", "lightblue")
-                .on("click", highlightNode);  // 클릭 이벤트 추가
+                .on("click", highlightNode)
+                .style("cursor", "pointer");  // 마우스가 올라갔을 때 커서 변경
 
             node.append("text")
                 .attr("dx", 15)
@@ -105,11 +107,15 @@
             function highlightNode(event, d) {
                 // 연결된 링크 및 노드를 필터링
                 const connectedNodes = new Set();
+                const connectedLinks = new Set();
+
                 data.links.forEach(l => {
                     if (l.source.id === d.id) {
                         connectedNodes.add(l.target.id);
+                        connectedLinks.add(l);
                     } else if (l.target.id === d.id) {
                         connectedNodes.add(l.source.id);
+                        connectedLinks.add(l);
                     }
                 });
 
@@ -125,7 +131,8 @@
 
                 // 연결된 링크 강조
                 link
-                    .filter(l => l.source.id === d.id || l.target.id === d.id)
+                    .filter(l => connectedLinks.has(l))
+                    .attr("stroke", "darkblue")  // 강조된 링크 색상 변경
                     .attr("stroke-opacity", 1);  // 연결된 링크 강조
             }
 
