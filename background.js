@@ -31,7 +31,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         console.log("getCorrelations 감지");
         getCorrelations(request.token)
             .then((result) => {
-                console.log(result);
+                const json = JSON.stringify(result);
+                console.log(`data: ${json}`);
                 sendResponse({success: true, data: result})
             })
             .catch((error) => sendResponse({success: false, error: error.message}));

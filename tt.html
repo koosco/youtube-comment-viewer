@@ -132,6 +132,9 @@
                 const connectedNodes = new Set();
                 const connectedLinks = new Set();
 
+                console.log(`d: ${d}`);
+                console.log(`d: ${d.id}`);
+                
                 data.links.forEach(l => {
                     if (l.source.id === d.id) {
                         connectedNodes.add(l.target.id);

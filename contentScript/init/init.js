@@ -1,7 +1,9 @@
 function init(){
+    console.log("init start");
     rootDiv = initHead();
     initBarChart(rootDiv);
-    initNetworkChart(rootDiv);
+    // initNetworkChart(rootDiv);
+    initWordCloud(rootDiv);
     addCustomDivToYoutube(rootDiv);
 }
 
