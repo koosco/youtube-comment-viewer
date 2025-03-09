@@ -1,6 +1,6 @@
 function drawNetworkGraph(nodes, links, containerId) {
-    var width = 800;  // width 값 정의
-    var height = 800;  // height 값 정의
+    var width = 600;
+    var height = 600;
 
     var svg = d3.select(`#${containerId}`).append("svg")
         .attr("width", width)
@@ -43,7 +43,7 @@ function drawNetworkGraph(nodes, links, containerId) {
     const circle = node.append("circle")
         .attr("r", 10)
         .attr("fill", "lightblue")
-        .on("click", highlightNode)
+        .on("click", highlightNode, links)
         .style("cursor", "pointer");
 
     node.append("text")
@@ -79,6 +79,7 @@ function drawNetworkGraph(nodes, links, containerId) {
     }
 
     function dragged(event, d) {
+        console.log(`d: ${d}`);
         d.fx = event.x;
         d.fy = event.y;
     }
@@ -89,29 +90,43 @@ function drawNetworkGraph(nodes, links, containerId) {
         d.fy = null;
     }
 
-    function highlightNode(event, d) {
-        console.log(`links: ${links}`);
+    function highlightNode(event, d, links) {
         const connectedNodes = new Set();
         const connectedLinks = new Set();
 
+        console.log(`d: ${d.id}`);
+        for(const link of links) {
+            const json = JSON.stringify(link);
+            console.log(`data: ${json}`);
+            break;
+        }
+    
+        // 링크 데이터를 탐색하여 연결된 노드와 링크를 필터링
         links.forEach(l => {
-            if (l.source.id === d.id) {
-                connectedNodes.add(l.target.id);
+            // source와 target이 객체일 수 있으므로 .id 또는 직접 비교
+            const sourceId = l.source.id || l.source;
+            const targetId = l.target.id || l.target;
+    
+            if (sourceId === d.id) {
+                connectedNodes.add(targetId);
                 connectedLinks.add(l);
-            } else if (l.target.id === d.id) {
-                connectedNodes.add(l.source.id);
+            } else if (targetId === d.id) {
+                connectedNodes.add(sourceId);
                 connectedLinks.add(l);
             }
         });
-
+    
+        // 모든 노드 및 링크를 흐리게 처리
         node.selectAll("circle").attr("fill", "lightgray");
         link.attr("stroke-opacity", 0.1);
-
-        d3.select(this).attr("fill", "darkblue");
+    
+        // 선택된 노드 및 연결된 노드 강조
+        d3.select(this).attr("fill", "darkblue");  // 클릭된 노드 강조
         node.selectAll("circle")
-            .filter(n => connectedNodes.has(n.id))
+            .filter(n => connectedNodes.has(n.id || n))  // 연결된 노드 필터링
             .attr("fill", "darkblue");
-
+    
+        // 연결된 링크 강조
         link
             .filter(l => connectedLinks.has(l))
             .attr("stroke", "darkblue")

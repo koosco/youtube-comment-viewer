@@ -18,13 +18,17 @@
             "js": ["contentScript/checkUrlChange.js",
                 "contentScript/draw/barChart.js",
                 "contentScript/draw/network.js",
+                "contentScript/draw/wordCloud.js",
                 "contentScript/resultListener.js",
                 "contentScript/ui.js",
                 "contentScript/init/init.js",
                 "contentScript/init/barChart.js",
                 "contentScript/init/networkChart.js",
+                "contentScript/init/wordCloud.js",
                 "contentScript/util/util.js",
-                "package/d3.v5.min.js"],
+                "package/d3.v6.min.js",
+                "package/d3.cloud.min.js"],
+            "css": ["contentScript/styles.css"],
             "run_at": "document_start"
         }
     ],
